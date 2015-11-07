@@ -1,0 +1,88 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<h1>Peticiones pendientes</h1>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Longitud</th>
+						<th>Latitud</th>
+						<th>Agente</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<%unless @pending_petitions.nil?%>
+						<%@pending_petitions.each do |p|%>
+							<%=form_tag(assign_agent_path(id:p.id), method: "post") do%>
+								<tr>
+									<td><%=p.id%></td>
+									<td><%=p.longitude%></td>
+									<td><%=p.latitude%></td>
+									<td><%=select_tag "agent", options_from_collection_for_select(@avalible_agents, "id", "name"),:include_blank => ''%></td>
+									<td><%=submit_tag 'Asignar'%></td>
+								</tr>
+							<%end%>
+						<%end%>
+					<%end%>
+				</tbody>
+			</table>
+			<%=link_to 'Administrar Agentes',agents_path%>
+		</div>
+		<div class="col-md-6">
+			<div class="row">
+				<h1>Asignadas</h1>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Longitud</th>
+							<th>Latitud</th>
+							<th>Agente</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<%unless @taked_petitions.nil?%>
+							<%@taked_petitions.each do |p|%>
+								<tr>
+									<td><%=p.id%></td>
+									<td><%=p.longitude%></td>
+									<td><%=p.latitude%></td>
+									<td><%=Agent.find(p.agent_id).name%></td>
+									<td><%=link_to "Liberar",end_request_path(id:p.id),method: :post%></td>
+								</tr>
+							<%end%>
+						<%end%>
+					</tbody>
+				</table>
+			</div>
+			<div class="row">
+				<h1>Atendidas</h1>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Longitud</th>
+							<th>Latitud</th>
+							<th>Agente</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%unless @attended_petittions.nil?%>
+							<%@attended_petittions.each do |p|%>
+								<tr>
+									<td><%=p.id%></td>
+									<td><%=p.longitude%></td>
+									<td><%=p.latitude%></td>
+									<td><%=Agent.find(p.agent_id).name%></td>
+								</tr>
+							<%end%>
+						<%end%>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
